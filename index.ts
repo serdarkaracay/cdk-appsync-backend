@@ -1,4 +1,8 @@
-// import { CfnGraphQLApi, CfnGraphQLSchema, CfnDataSource, CfnResolver} from 'aws-cdk-lib/aws-appsync';
+import * as appsync from "@aws-cdk/aws-appsync-alpha";
+import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import { UserPoolClient } from "aws-cdk-lib/aws-cognito";
+// import { AttributeType, BillingMode, CfnTable, StreamViewType, Table } from 'aws-cdk-lib/aws-appsync';
 import {
   Table,
   AttributeType,
@@ -6,21 +10,11 @@ import {
   BillingMode,
   CfnTable,
 } from "aws-cdk-lib/aws-dynamodb";
-import {
-  Role,
-  ServicePrincipal,
-  ManagedPolicy,
-  PolicyStatement,
-  Effect,
-} from "aws-cdk-lib/aws-iam";
-import { Construct } from "constructs";
-import * as appsync from "@aws-cdk/aws-appsync-alpha";
-import * as cognito from "aws-cdk-lib/aws-cognito";
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import { App, Duration, Stack, StackProps, CfnOutput } from "aws-cdk-lib";
-import { table } from "console";
+import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Key } from "aws-cdk-lib/aws-kms";
-import { UserPoolClient } from "aws-cdk-lib/aws-cognito";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { table } from "console";
+import { Construct } from "constructs";
 import * as path from "path";
 
 require("dotenv").config();
@@ -74,6 +68,7 @@ export class CdkAppsyncBackendStack extends Stack {
         resources: [cfnTable.attrArn],
       })
     );
+    
 
     const principal = new ServicePrincipal("cognito-idp.amazonaws.com");
     confirmUserSignupLambdaFunction.grantInvoke(principal);
